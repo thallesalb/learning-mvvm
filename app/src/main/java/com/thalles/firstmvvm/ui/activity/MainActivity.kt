@@ -1,16 +1,20 @@
 package com.thalles.firstmvvm.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.thalles.firstmvvm.ui.adapter.NotasAdapter
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.thalles.firstmvvm.R
+import com.thalles.firstmvvm.ui.adapter.NotasAdapter
+import com.thalles.firstmvvm.viewmodel.NotaViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    val notasAdapter by lazy {
+    private lateinit var notaViewModel: NotaViewModel
+    private val notasAdapter by lazy {
         NotasAdapter()
     }
 
@@ -19,6 +23,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbar)
+
+        recyclerView.apply {
+            adapter = notasAdapter
+        }
+
+        notaViewModel = ViewModelProviders.of(this).get(NotaViewModel::class.java)
+        notaViewModel.getNotas().observe(this, Observer { data ->
+            data?.let {
+                notasAdapter.add(it)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -33,4 +48,5 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
 }

@@ -25,6 +25,12 @@ class NotasAdapter(private val data: MutableList<Nota> = mutableListOf())
         notifyDataSetChanged()
     }
 
+    fun add(itens: List<Nota>) {
+        data.clear()
+        data.addAll(itens)
+        notifyDataSetChanged()
+    }
+
     fun remove(item: Nota) {
         data.remove(item)
         notifyDataSetChanged()
