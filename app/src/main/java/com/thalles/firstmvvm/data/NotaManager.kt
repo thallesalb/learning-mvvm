@@ -1,13 +1,19 @@
 package com.thalles.firstmvvm.data
 
+import androidx.lifecycle.MutableLiveData
+
 class NotaManager {
 
-    private val data = listOf(
-        Nota(texto = "Nota 1"),
-        Nota(texto = "Nota 2"),
-        Nota(texto = "Nota 3"),
-        Nota(texto = "Nota 4")
-    )
+    private val data: MutableLiveData<MutableList<Nota>> = MutableLiveData()
+
 
     fun getNotas() = data
+    fun addNota(nota: Nota) {
+        data.postValue(
+            data.value?.let {
+                it.add(nota)
+                it
+            } ?: mutableListOf(nota)
+        )
+    }
 }

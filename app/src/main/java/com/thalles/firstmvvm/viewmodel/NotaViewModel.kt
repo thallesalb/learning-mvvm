@@ -7,22 +7,14 @@ import com.thalles.firstmvvm.data.NotaManager
 
 class NotaViewModel: ViewModel() {
     private val manager = NotaManager()
-    private lateinit var mNotas: MutableLiveData<List<Nota>>
+    private lateinit var mNotas: MutableLiveData<MutableList<Nota>>
 
-    fun getNotas(): MutableLiveData<List<Nota>> {
-        if (!::mNotas.isInitialized) {
-            loadNotas()
-        }
+    fun getNotas(): MutableLiveData<MutableList<Nota>> {
+        if (!::mNotas.isInitialized)
+            mNotas = manager.getNotas()
 
         return mNotas
     }
 
-    fun loadNotas() {
-        if (!::mNotas.isInitialized) {
-            mNotas = MutableLiveData()
-        }
-
-        val tmp = manager.getNotas()
-        mNotas.postValue(tmp)
-    }
+    fun save(nota: Nota) = manager.addNota(nota)
 }
