@@ -7,17 +7,17 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.thalles.firstmvvm.R
 import com.thalles.firstmvvm.data.Nota
 import com.thalles.firstmvvm.ui.adapter.NotasAdapter
 import com.thalles.firstmvvm.viewmodel.NotaViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_add_nota.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var notaViewModel: NotaViewModel
+    // Iniciando ViewModel padrão Koin
+    private val notaViewModel: NotaViewModel by viewModel()
     private val notasAdapter by lazy {
         NotasAdapter()
     }
@@ -32,7 +32,8 @@ class MainActivity : AppCompatActivity() {
             adapter = notasAdapter
         }
 
-        notaViewModel = ViewModelProviders.of(this).get(NotaViewModel::class.java)
+        // Iniciando ViewModel padrão Android
+//        notaViewModel = ViewModelProviders.of(this).get(NotaViewModel::class.java)
         notaViewModel.getNotas().observe(this, Observer { data ->
             data?.let {
                 notasAdapter.add(it)
